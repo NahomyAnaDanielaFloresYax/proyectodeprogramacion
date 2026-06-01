@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cosmetic NCJ | Tienda de Maquillaje</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #FFF0EC 0%, #F2E0DA 100%); color: #4B2E2A; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+body.dark { background: #2A1A18; color: #E8DCD8; }
+body.dark .product-card, body.dark .cart-modal-content, body.dark .modal-content, body.dark .modal-login { background: #3D2B28; border-color: #754B4D; }
+body.dark .btn-secondary { background: #3D2B28; color: #E8DCD8; border-color: #754B4D; }
+body.dark .quantity-selector .qty-btn { background: #5A403C; color: #E8DCD8; }
+body.dark .add-to-cart-btn { background: #D8A694; }
+body.dark footer { background: #2A1A18; }
+body.dark .footer-section a { color: #D8A694; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+header { position: sticky; top: 0; z-index: 50; background: rgba(255, 240, 236, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(168, 106, 101, 0.3); padding: 12px 20px; transition: background 0.3s; }
+body.dark header { background: rgba(42, 26, 24, 0.95); border-bottom-color: #754B4D; }
+.header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.brand { cursor: pointer; transition: transform 0.2s; }
+.brand:hover { transform: scale(1.02); }
+.brand h1 { font-size: clamp(1.3rem, 5vw, 1.9rem); background: linear-gradient(135deg, #A86A65, #D8A694); background-clip: text; -webkit-background-clip: text; color: transparent; }
+.brand p { color: #AB8882; font-size: clamp(0.7rem, 3vw, 0.85rem); }
+.btn-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.btn { border: none; border-radius: 40px; padding: 8px 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: clamp(0.75rem, 3vw, 0.9rem); white-space: nowrap; }
+.btn-primary { background: #D8A694; color: #3D2B28; }
+.btn-primary:hover { background: #C68D7A; transform: scale(1.02); }
+.btn-secondary { background: white; border: 1px solid #E2C9C2; color: #754B4D; }
+.btn-roulette { background: linear-gradient(135deg, #D8A694, #A86A65); color: white; }
+.cart-icon-btn { position: relative; background: none; font-size: 1.5rem; padding: 8px 12px; cursor: pointer; color: #A86A65; }
+.cart-count { position: absolute; top: -5px; right: -5px; background: #754B4D; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+.user-info { display: flex; align-items: center; gap: 8px; background: rgba(168, 106, 101, 0.15); padding: 5px 12px; border-radius: 40px; }
+
+/* Ofertas */
+.offer-banner { background: linear-gradient(135deg, #754B4D, #A86A65); border-radius: clamp(20px, 4vw, 32px); padding: clamp(20px, 4vw, 30px); margin: 30px 0; color: white; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; position: relative; overflow: hidden; }
+.offer-banner::before { content: "💄"; position: absolute; font-size: 150px; opacity: 0.1; bottom: -20px; right: -20px; transform: rotate(-15deg); }
+.discount-badge { background: rgba(255,255,255,0.25); display: inline-block; padding: 5px 12px; border-radius: 40px; font-weight: bold; margin: 8px 0; }
+.offer-product { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 12px 20px; text-align: center; min-width: 180px; }
+.offer-timer { background: rgba(0,0,0,0.2); padding: 8px 15px; border-radius: 40px; display: inline-block; margin-top: 10px; font-size: clamp(0.8rem, 3.5vw, 1rem); }
+.timer-digits { font-weight: bold; background: #4B2E2A; padding: 4px 8px; border-radius: 12px; margin: 0 2px; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: center; background: rgba(216, 166, 148, 0.15); border-radius: clamp(24px, 5vw, 48px); padding: clamp(20px, 4vw, 32px); margin: 30px 0; backdrop-filter: blur(4px); }
+.hero-text h2 { font-size: clamp(1.5rem, 6vw, 3rem); font-weight: 600; margin-bottom: 16px; color: #754B4D; }
+body.dark .hero-text h2 { color: #D8A694; }
+.hero img { width: 100%; border-radius: clamp(20px, 4vw, 32px); object-fit: cover; max-height: 340px; }
+
+/* Productos */
+.section-title { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 600; margin: 40px 0 20px; color: #754B4D; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.product-card { background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 10px 20px -8px rgba(0,0,0,0.08); transition: transform 0.2s; border: 1px solid #E2C9C2; position: relative; cursor: pointer; }
+.product-card:hover { transform: translateY(-4px); }
+.product-card img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; }
+.product-info { padding: 16px; }
+.product-info h3 { font-size: clamp(1rem, 4vw, 1.2rem); margin-bottom: 6px; }
+.price { font-weight: 700; color: #A86A65; font-size: clamp(1rem, 4vw, 1.2rem); }
+.old-price { text-decoration: line-through; color: #999; font-size: 0.8rem; margin-left: 8px; }
+.discount-badge-card { position: absolute; top: 12px; right: 12px; background: #754B4D; color: white; padding: 5px 10px; border-radius: 20px; font-weight: bold; font-size: 0.75rem; z-index: 2; }
+.quantity-selector { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 8px; }
+.qty-btn { background: #F2E0DA; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+.add-to-cart-btn { flex: 1; background: #D8A694; border: none; padding: 10px; border-radius: 60px; font-weight: 600; cursor: pointer; color: #3D2B28; }
+
+/* Modales */
+.modal-login, .modal-product, .cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 16px; }
+.modal-login.show, .modal-product.show, .cart-modal.show { display: flex; }
+.modal-content, .cart-modal-content { background: #fffbf5; border-radius: 40px; max-width: 500px; width: 100%; max-height: 85vh; padding: 25px; overflow-y: auto; position: relative; }
+.modal-product .modal-content { max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.close-modal { position: absolute; top: 16px; right: 20px; font-size: 28px; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #E2C9C2; }
+.cart-items-list { max-height: 50vh; overflow-y: auto; margin-bottom: 20px; }
+.cart-item { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px; border-bottom: 1px solid #E2C9C2; }
+.cart-item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 12px; }
+.cart-total { text-align: right; padding: 15px; background: rgba(216, 166, 148, 0.15); border-radius: 28px; margin: 10px 0; }
+.checkout-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #D8A694, #A86A65); border: none; border-radius: 60px; font-weight: bold; cursor: pointer; color: white; }
+
+/* Estrellas reseña */
+.star-rating { display: flex; gap: 8px; font-size: 1.8rem; cursor: pointer; margin: 15px 0; }
+.star { color: #ddd; transition: color 0.2s; cursor: pointer; }
+.star.active { color: #ffc107; }
+.review-item { border-bottom: 1px solid #E2C9C2; padding: 15px 0; }
+.review-stars { color: #ffc107; }
+
+/* Ruleta */
+.roulette-wrapper { position: relative; display: flex; justify-content: center; margin: 20px 0; }
+canvas { border-radius: 50%; box-shadow: 0 15px 30px -10px rgba(0,0,0,0.3); width: 100%; height: auto; max-width: 350px; }
+.pointer { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 40px solid #A86A65; }
+.spin-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #D8A694, #A86A65); border: none; border-radius: 60px; font-weight: bold; margin: 15px 0; cursor: pointer; color: white; }
+.timer-info { background: rgba(216, 166, 148, 0.15); padding: 10px; border-radius: 28px; text-align: center; margin: 10px 0; }
+.result-area { background: rgba(216, 166, 148, 0.1); border-radius: 28px; padding: 12px; text-align: center; margin-top: 12px; }
+.toast-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #2c2824; color: white; padding: 10px 20px; border-radius: 60px; z-index: 1100; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
+.product-footer { background: rgba(216, 166, 148, 0.15); border-radius: 36px; padding: 32px; margin: 40px 0 30px; text-align: center; }
+
+/* Footer mejorado */
+footer { background: rgba(216, 166, 148, 0.1); border-radius: 36px 36px 0 0; padding: 40px 20px 30px; margin-top: 60px; transition: background 0.3s; }
+.footer-content { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+.footer-section h4 { margin-bottom: 20px; color: #A86A65; font-size: 1.2rem; }
+.footer-section p, .footer-section a { color: #AB8882; text-decoration: none; line-height: 2; display: block; transition: color 0.2s; }
+.footer-section a:hover { color: #754B4D; transform: translateX(5px); }
+.social-links { display: flex; gap: 15px; margin-top: 20px; }
+.social-links a { display: inline-block; font-size: 1.5rem; }
+.footer-bottom { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid rgba(168, 106, 101, 0.2); color: #AB8882; font-size: 0.8rem; }
+
+@media (max-width: 768px) { 
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+    .offer-banner { grid-template-columns: 1fr; text-align: center; }
+    .modal-product .modal-content { grid-template-columns: 1fr; }
+    .footer-content { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+    .social-links { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="brand" id="logoLink">
+            <h1>Cosmetic NCJ</h1>
+            <p>✦ Belleza con alma beige y dorada ✦</p>
+        </div>
+        <div class="btn-group">
+            <div id="userInfoDisplay" class="user-info" style="display:none;"><i class="fas fa-user-circle"></i> <span id="userNameDisplay"></span></div>
+            <button id="cartIconBtn" class="btn cart-icon-btn"><i class="fas fa-shopping-cart"></i><span id="cartCountBadge" class="cart-count">0</span></button>
+            <button id="rouletteModalBtn" class="btn btn-roulette"><i class="fas fa-gift"></i> 🎡 Ruleta</button>
+            <button id="loginBtn" class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i> Login/Registro</button>
+            <button id="logoutBtn" class="btn btn-secondary" style="display:none;"><i class="fas fa-sign-out-alt"></i> Salir</button>
+            <button id="adminPanelBtn" class="btn btn-primary" style="display:none;"><i class="fas fa-crown"></i> Admin</button>
+            <button id="darkModeToggle" class="btn btn-secondary">🌓</button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div id="offerBanner" class="offer-banner" style="display: none;">
+        <div class="offer-info"><h3>🔥 OFERTA ESPECIAL 🔥</h3><div class="discount-badge" id="discountBadge">-0%</div><div class="offer-timer">⏰ Termina en: <span id="timerDays" class="timer-digits">00</span>d <span id="timerHours" class="timer-digits">00</span>h <span id="timerMinutes" class="timer-digits">00</span>m <span id="timerSeconds" class="timer-digits">00</span>s</div></div>
+        <div class="offer-product" id="offerProduct"></div>
+    </div>
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Maquillaje con estilo, texturas que enamoran.</h2>
+            <p>Tu rutina de belleza merece calidez y calidad. Descubre productos pensados para potenciar tu brillo único.</p>
+        </div>
+        <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=900&q=80" alt="Makeup" loading="lazy">
+    </section>
+    <h2 class="section-title">✨ Productos destacados</h2>
+    <div class="product-grid" id="productGrid"></div>
+    <section class="product-footer">
+        <h3>Inicia sesión y comparte tu opinión 💖</h3>
+        <p>Regístrate para dejar reseñas y calificar tus productos favoritos.</p>
+    </section>
+</main>
+
+<!-- Footer mejorado con enlace a Quiénes Somos -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Cosmetic NCJ</h4>
+            <p>Belleza con alma beige y dorada. Productos de alta calidad para potenciar tu brillo único.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>Enlaces</h4>
+            <a href="#" id="quienesSomosLink"><i class="fas fa-heart"></i> Quiénes Somos</a>
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Preguntas Frecuentes</a>
+        </div>
+        <div class="footer-section">
+            <h4>Contacto</h4>
+            <p><i class="fas fa-envelope"></i> info@cosmeticncj.com</p>
+            <p><i class="fas fa-phone"></i> +502 1234 5678</p>
+            <p><i class="fas fa-map-marker-alt"></i> Ciudad de Guatemala</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Cosmetic NCJ — Hecho con esencia natural. ✨</p>
+    </div>
+</footer>
+
+<!-- Modal Carrito -->
+<div id="cartModal" class="cart-modal"><div class="cart-modal-content"><div class="cart-header"><h2><i class="fas fa-shopping-cart"></i> Mi Carrito</h2><span class="close-cart" id="closeCartBtn">&times;</span></div><div id="cartItemsList" class="cart-items-list"><div class="empty-cart" style="text-align:center; padding:40px;">🛒 Tu carrito está vacío</div></div><div class="cart-total"><h3>Total: $<span id="cartTotal">0.00</span></h3></div><button id="checkoutBtn" class="checkout-btn">💳 Proceder al pago</button></div></div>
+
+<!-- Modal Login/Registro -->
+<div id="loginModal" class="modal-login"><div class="modal-content"><span class="close-modal" id="closeLoginModal">&times;</span><h2 style="text-align:center; color:#A86A65;"><i class="fas fa-heart"></i> Cosmetic NCJ</h2><div style="display:flex; gap:10px; margin-bottom:20px; border-bottom:2px solid #E2C9C2;"><div id="tabLogin" class="tab-login" style="flex:1; text-align:center; padding:10px; cursor:pointer; font-weight:600; color:#A86A65; border-bottom:3px solid #A86A65;">Iniciar Sesión</div><div id="tabRegister" class="tab-login" style="flex:1; text-align:center; padding:10px; cursor:pointer; font-weight:600; color:#AB8882;">Registrarse</div></div>
+<div id="loginPanel"><div class="form-group" style="margin-bottom:15px;"><label>Usuario o Email</label><input type="text" id="loginUsername" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><div class="form-group" style="margin-bottom:15px;"><label>Contraseña</label><input type="password" id="loginPassword" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><button id="doLoginBtn" class="btn btn-primary" style="width:100%;">Iniciar Sesión</button><div id="loginError" style="color:#ff6b6b; margin-top:10px; text-align:center;"></div></div>
+<div id="registerPanel" style="display:none;"><div class="form-group" style="margin-bottom:15px;"><label>Nombre completo</label><input type="text" id="regName" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><div class="form-group" style="margin-bottom:15px;"><label>Email</label><input type="email" id="regEmail" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><div class="form-group" style="margin-bottom:15px;"><label>Usuario</label><input type="text" id="regUsername" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><div class="form-group" style="margin-bottom:15px;"><label>Contraseña</label><input type="password" id="regPassword" style="width:100%; padding:12px; border-radius:40px; border:1px solid #E2C9C2;"></div><button id="doRegisterBtn" class="btn btn-primary" style="width:100%;">Registrarse</button><div id="registerError" style="color:#ff6b6b; margin-top:10px;"></div><div id="registerSuccess" style="color:#4caf50; margin-top:10px;"></div></div>
+<div class="admin-info" style="background:rgba(216,166,148,0.15); padding:10px; border-radius:20px; margin-top:20px; text-align:center; font-size:0.75rem;"><i class="fas fa-lock"></i> ¿Eres administrador? Usa credenciales especiales</div></div></div>
+
+<!-- Modal Producto Detalle -->
+<div id="productModal" class="modal-product"><div class="modal-content"><span class="close-modal" id="closeProductModal">&times;</span>
+  <div id="productDetailLeft"><img id="modalProductImg" src="" style="width:100%; border-radius:28px;"><div id="modalThumbs" style="display:flex; gap:10px; margin-top:15px;"></div></div>
+  <div id="productDetailRight"><h2 id="modalProductName"></h2><div class="price" id="modalProductPrice"></div><p id="modalProductDesc" style="color:#AB8882; margin:15px 0; line-height:1.6;"></p><div class="quantity-selector"><button class="qty-btn" id="modalQtyMinus">-</button><span id="modalProductQty" style="min-width:40px; text-align:center;">1</span><button class="qty-btn" id="modalQtyPlus">+</button><button id="modalAddToCart" class="add-to-cart-btn" style="flex:1;">🛒 Añadir al carrito</button></div>
+  <hr style="margin:20px 0;">
+  <h3><i class="fas fa-star" style="color:#ffc107;"></i> Opiniones y Reseñas</h3>
+  <div id="modalReviewForm" style="background:rgba(216,166,148,0.15); border-radius:28px; padding:20px; margin:15px 0;">
+    <div class="star-rating" id="modalStarRating"><span class="star" data-rating="1">★</span><span class="star" data-rating="2">★</span><span class="star" data-rating="3">★</span><span class="star" data-rating="4">★</span><span class="star" data-rating="5">★</span></div>
+    <textarea id="modalReviewText" rows="3" placeholder="Escribe tu reseña aquí..." style="width:100%; padding:12px; border-radius:20px; border:1px solid #E2C9C2; margin:10px 0;"></textarea>
+    <button id="modalSubmitReview" class="btn btn-primary">Enviar reseña</button>
+    <div id="modalReviewError" style="color:#ff6b6b; margin-top:8px;"></div>
+  </div>
+  <div id="modalLoginToReview" style="text-align:center; padding:20px; background:rgba(216,166,148,0.15); border-radius:28px;"><p>🔒 <a href="#" id="loginLinkFromModal" style="color:#A86A65;">Inicia sesión</a> para dejar tu reseña</p></div>
+  <div id="modalReviewsList"></div></div></div></div>
+
+<!-- Modal Ruleta -->
+<div id="rouletteModal" class="modal-login"><div class="modal-content" style="max-width:550px;"><span class="close-modal" id="closeRouletteModal">&times;</span><h2 style="text-align:center;">🎡 Ruleta de la Suerte 🎲</h2><div class="roulette-wrapper"><div class="pointer"></div><canvas id="rouletteCanvas" width="400" height="400"></canvas></div><button id="spinBtn" class="spin-btn">🎰 GIRAR RULETA 🎰</button><div class="timer-info" id="timerInfo">🎯 ¡Primer giro GRATIS!</div><div class="result-area"><strong>✨ Último resultado ✨</strong><br><span id="lastResult">Aún no has girado</span></div><div style="display: flex; justify-content: space-between; margin-top:12px;"><span>🎲 Tiros: <strong id="spinCount">0</strong></span><span>⏱️ Espera progresiva</span></div></div></div>
+
+<!-- Modal Admin -->
+<div id="adminModal" class="modal-login"><div class="modal-content" style="max-width:700px;"><span class="close-modal" id="closeAdminModal">&times;</span><h2><i class="fas fa-crown"></i> Panel Administrador</h2>
+  <div style="margin:20px 0;"><h3>➕ Añadir producto</h3><div style="display:grid; gap:10px;"><input type="text" id="adminProdName" placeholder="Nombre"><input type="number" id="adminProdPrice" placeholder="Precio"><input type="text" id="adminProdImg" placeholder="URL imagen"><textarea id="adminProdDesc" rows="2" placeholder="Descripción"></textarea><button id="adminAddProduct" class="btn btn-primary">Añadir</button></div></div>
+  <div><h3>📦 Productos</h3><div id="adminProductList"></div></div>
+  <div><h3>👥 Usuarios</h3><div id="adminUserList"></div></div>
+  <div><h3>📝 Reseñas</h3><div id="adminReviewsList"></div></div>
+</div></div>
+
+<div id="toastMsg" class="toast-msg"></div>
+
+<!-- Página de pago integrada (pago.html) -->
+<div id="pagoModal" class="modal-login" style="display: none;">
+  <div class="card-box" style="background: white; width: 360px; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+    <h2 style="text-align: center; color: #d8a694; margin-bottom: 20px;">Pago con tarjeta</h2>
+    <div style="text-align: center; margin-bottom: 15px;">
+      <i class="fa-brands fa-cc-visa" style="font-size: 26px; margin: 0 5px; color: #d8a694;"></i>
+      <i class="fa-brands fa-cc-mastercard" style="font-size: 26px; margin: 0 5px; color: #d8a694;"></i>
+      <i class="fa-brands fa-cc-amex" style="font-size: 26px; margin: 0 5px; color: #d8a694;"></i>
+    </div>
+    <form id="cardForm">
+      <div style="position: relative; margin-bottom: 15px;">
+        <i class="fa-solid fa-user" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #d8a694;"></i>
+        <input type="text" id="name" placeholder="Nombre en la tarjeta" required style="width: 100%; padding: 10px 10px 10px 35px; border-radius: 10px; border: 1px solid #ccc; outline: none;">
+      </div>
+      <div style="position: relative; margin-bottom: 15px;">
+        <i class="fa-solid fa-credit-card" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #d8a694;"></i>
+        <input type="text" id="cardNumber" placeholder="Número de tarjeta" maxlength="16" required style="width: 100%; padding: 10px 10px 10px 35px; border-radius: 10px; border: 1px solid #ccc; outline: none;">
+      </div>
+      <div style="position: relative; margin-bottom: 15px;">
+        <i class="fa-solid fa-calendar" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #d8a694;"></i>
+        <input type="month" id="expiry" required style="width: 100%; padding: 10px 10px 10px 35px; border-radius: 10px; border: 1px solid #ccc; outline: none;">
+      </div>
+      <div style="position: relative; margin-bottom: 15px;">
+        <i class="fa-solid fa-lock" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #d8a694;"></i>
+        <input type="password" id="cvv" placeholder="CVV" maxlength="3" required style="width: 100%; padding: 10px 10px 10px 35px; border-radius: 10px; border: 1px solid #ccc; outline: none;">
+      </div>
+      <button type="submit" style="width: 100%; padding: 12px; background: #d8a694; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px;">Pagar ahora 💳</button>
+      <div id="msg" style="text-align: center; margin-top: 10px; font-weight: bold;"></div>
+    </form>
+    <button id="closePagoBtn" style="margin-top: 10px; width: 100%; padding: 8px; background: #ccc; border: none; border-radius: 10px; cursor: pointer;">Cerrar</button>
+  </div>
+</div>
+
+<script>
+// ==================== DATOS INICIALES ====================
+let products = JSON.parse(localStorage.getItem('cosmetic_products')) || [
+  { id: 1, name: "Base Natural Glow", price: 15.99, img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80", description: "Base líquida de cobertura media con acabado natural. Ideal para pieles normales a mixtas." },
+  { id: 2, name: "Paleta Sol Beige", price: 18.50, img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80", description: "Paleta de sombras con 12 tonos cálidos, desde beiges suaves hasta dorados intensos." },
+  { id: 3, name: "Labial Rose Beige", price: 9.75, img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80", description: "Labial cremoso con color intenso y sensación suave. Acabado satinado." },
+  { id: 4, name: "Iluminador Lumi", price: 11.25, img: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80", description: "Iluminador en polvo con brillo sutil para un acabado luminoso." },
+  { id: 5, name: "Rímel Volumen Extreme", price: 12.99, img: "https://images.unsplash.com/photo-1512496015851-a90fb38f96be?auto=format&fit=crop&w=800&q=80", description: "Rímel de larga duración que aporta volumen y curvatura extrema." },
+  { id: 6, name: "Delineador Líquido", price: 8.99, img: "https://images.unsplash.com/photo-1515688553008-6f3a018cd4d2?auto=format&fit=crop&w=800&q=80", description: "Delineador líquido de punta fina para trazos precisos." }
+];
+
+let users = JSON.parse(localStorage.getItem('cosmetic_users')) || [
+    { id: 1, name: "Laura Gómez", email: "laura@example.com", username: "laura", password: "1234", isAdmin: false, banned: false }
+];
+let reviews = JSON.parse(localStorage.getItem('cosmetic_reviews')) || {};
+let cart = JSON.parse(localStorage.getItem('cosmetic_cart')) || [];
+let currentUser = JSON.parse(localStorage.getItem('cosmetic_currentUser')) || null;
+
+const ADMIN_USERNAME = "ncj2036";
+const ADMIN_PASSWORD = "adminncj2026";
+
+function saveProducts() { localStorage.setItem('cosmetic_products', JSON.stringify(products)); }
+function saveUsers() { localStorage.setItem('cosmetic_users', JSON.stringify(users)); }
+function saveReviews() { localStorage.setItem('cosmetic_reviews', JSON.stringify(reviews)); }
+function saveCart() { localStorage.setItem('cosmetic_cart', JSON.stringify(cart)); updateCartUI(); }
+
+// ==================== OFERTAS ====================
+let currentOffer = null, offerEndTime = null, offerTimerInterval = null;
+const durations = [{name:"1 día",ms:24*60*60*1000},{name:"3 días",ms:3*24*60*60*1000},{name:"1 semana",ms:7*24*60*60*1000},{name:"2 semanas",ms:14*24*60*60*1000},{name:"1 mes",ms:30*24*60*60*1000}];
+const possibleDiscounts = [5,8,10,12,15,17,20,22,25,28,30,32,35,40,45,50,55,60,65,70,75,80,85,90];
+
+function generateRandomOffer() { let product = {...products[Math.floor(Math.random()*products.length)]}, discountPercent = possibleDiscounts[Math.floor(Math.random()*possibleDiscounts.length)], duration = durations[Math.floor(Math.random()*durations.length)]; return { product, discountPercent, discountedPrice: (product.price*(1-discountPercent/100)).toFixed(2), durationMs: duration.ms, durationName: duration.name, startTime: Date.now() }; }
+function startNewOffer() { currentOffer = generateRandomOffer(); offerEndTime = currentOffer.startTime + currentOffer.durationMs; localStorage.setItem('cosmetic_offer', JSON.stringify(currentOffer)); localStorage.setItem('cosmetic_offer_endTime', offerEndTime); updateOfferUI(); startOfferTimer(); }
+function updateOfferUI() { let banner = document.getElementById('offerBanner'); if(!currentOffer) return; banner.style.display='grid'; document.getElementById('discountBadge').innerHTML=`🔥 ${currentOffer.discountPercent}% OFF 🔥`; document.getElementById('offerProduct').innerHTML=`<strong>${currentOffer.product.name}</strong><br><span class="old-price">$${currentOffer.product.price.toFixed(2)}</span><br><span class="new-price">$${currentOffer.discountedPrice}</span><br><small>Válido: ${currentOffer.durationName}</small>`; renderProducts(); }
+function startOfferTimer() { if(offerTimerInterval) clearInterval(offerTimerInterval); offerTimerInterval = setInterval(() => { let remaining = offerEndTime - Date.now(); if(remaining<=0){ clearInterval(offerTimerInterval); startNewOffer(); showToast("🎉 ¡Nueva oferta disponible! 🎉"); return; } let days = Math.floor(remaining/(24*60*60*1000)), hours = Math.floor((remaining%(24*60*60*1000))/(60*60*1000)), minutes = Math.floor((remaining%(60*60*1000))/(60*1000)), seconds = Math.floor((remaining%(60*1000))/1000); document.getElementById('timerDays').textContent=String(days).padStart(2,'0'); document.getElementById('timerHours').textContent=String(hours).padStart(2,'0'); document.getElementById('timerMinutes').textContent=String(minutes).padStart(2,'0'); document.getElementById('timerSeconds').textContent=String(seconds).padStart(2,'0'); },1000); }
+function getProductPriceWithOffer(product) { if(currentOffer && currentOffer.product.id===product.id) return { price:parseFloat(currentOffer.discountedPrice), originalPrice:product.price, discount:currentOffer.discountPercent, hasOffer:true }; return { price:product.price, originalPrice:null, discount:null, hasOffer:false }; }
+
+// ==================== CARRITO ====================
+function updateCartUI() {
+  let totalItems = cart.reduce((s,i)=>s+i.quantity,0);
+  document.getElementById('cartCountBadge').innerText = totalItems;
+  let cartItemsList = document.getElementById('cartItemsList');
+  let cartTotalSpan = document.getElementById('cartTotal');
+  if(cart.length===0){ cartItemsList.innerHTML='<div style="text-align:center; padding:40px;">🛒 Tu carrito está vacío</div>'; cartTotalSpan.innerText='0.00'; return; }
+  let html='', total=0;
+  cart.forEach(item=>{ total+=item.price*item.quantity;
+    html+=`<div class="cart-item"><img src="${item.img}" class="cart-item-img"><div><h4>${item.name}</h4><div>$${item.price.toFixed(2)} c/u</div></div><div><button class="cart-qty-minus" data-id="${item.id}">-</button> <span>${item.quantity}</span> <button class="cart-qty-plus" data-id="${item.id}">+</button> <button class="cart-remove" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button></div></div>`;
+  });
+  cartItemsList.innerHTML=html; cartTotalSpan.innerText=total.toFixed(2);
+  document.querySelectorAll('.cart-qty-minus').forEach(btn=>btn.addEventListener('click',()=>{ let id=parseInt(btn.dataset.id), item=cart.find(i=>i.id===id); if(item){ if(item.quantity>1) item.quantity--; else cart=cart.filter(i=>i.id!==id); saveCart(); renderProducts(); } }));
+  document.querySelectorAll('.cart-qty-plus').forEach(btn=>btn.addEventListener('click',()=>{ let id=parseInt(btn.dataset.id), item=cart.find(i=>i.id===id); if(item){ item.quantity++; saveCart(); renderProducts(); } }));
+  document.querySelectorAll('.cart-remove').forEach(btn=>btn.addEventListener('click',()=>{ cart=cart.filter(i=>i.id!==parseInt(btn.dataset.id)); saveCart(); renderProducts(); }));
+}
+
+// ==================== RENDER PRODUCTOS ====================
+function renderProducts() {
+  let grid = document.getElementById('productGrid'); if(!grid) return; grid.innerHTML = '';
+  products.forEach(prod => { let priceInfo = getProductPriceWithOffer(prod), cartItem = cart.find(i=>i.id===prod.id), currentQty = cartItem ? cartItem.quantity : 0;
+    let card = document.createElement('div'); card.className = 'product-card';
+    card.innerHTML = `${priceInfo.hasOffer ? `<div class="discount-badge-card">-${priceInfo.discount}%</div>` : ''}<img src="${prod.img}" alt="${prod.name}" class="product-img" data-id="${prod.id}"><div class="product-info"><h3>${prod.name}</h3><div class="price">$${priceInfo.price.toFixed(2)}${priceInfo.originalPrice ? `<span class="old-price">$${priceInfo.originalPrice.toFixed(2)}</span>` : ''}</div><div class="quantity-selector"><button class="qty-btn qty-minus" data-id="${prod.id}">-</button><span class="qty-value" id="qty-${prod.id}">${currentQty}</span><button class="qty-btn qty-plus" data-id="${prod.id}">+</button><button class="add-to-cart-btn" data-id="${prod.id}" data-price="${priceInfo.price}">🛒 Añadir</button></div></div>`;
+    grid.appendChild(card);
+  });
+  document.querySelectorAll('.product-img').forEach(img=>img.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(img.dataset.id); openProductModal(id); }));
+  document.querySelectorAll('.qty-minus').forEach(btn=>btn.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(btn.dataset.id), item=cart.find(i=>i.id===id); if(item){ if(item.quantity>1) item.quantity--; else cart=cart.filter(i=>i.id!==id); saveCart(); renderProducts(); } }));
+  document.querySelectorAll('.qty-plus').forEach(btn=>btn.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(btn.dataset.id), product=products.find(p=>p.id===id), priceInfo=getProductPriceWithOffer(product), item=cart.find(i=>i.id===id); if(item) item.quantity++; else cart.push({id:product.id,name:product.name,price:priceInfo.price,img:product.img,quantity:1}); saveCart(); renderProducts(); }));
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(btn.dataset.id), product=products.find(p=>p.id===id), priceInfo=getProductPriceWithOffer(product), item=cart.find(i=>i.id===id); if(item) item.quantity++; else cart.push({id:product.id,name:product.name,price:priceInfo.price,img:product.img,quantity:1}); saveCart(); renderProducts(); showToast(`✨ ${product.name} añadido`); }));
+}
+
+// ==================== MODAL PRODUCTO ====================
+let currentProductId = null;
+function openProductModal(id) { currentProductId = id; let product = products.find(p=>p.id===id); if(!product) return; let priceInfo = getProductPriceWithOffer(product); document.getElementById('modalProductName').innerText=product.name; document.getElementById('modalProductDesc').innerText=product.description||'Producto de alta calidad para tu rutina de belleza.'; document.getElementById('modalProductImg').src=product.img; document.getElementById('modalProductPrice').innerHTML=`$${priceInfo.price.toFixed(2)}${priceInfo.originalPrice?`<span class="old-price">$${priceInfo.originalPrice.toFixed(2)}</span>`:''}`; document.getElementById('modalProductQty').innerText='1'; document.getElementById('productModal').classList.add('show'); renderModalReviews(); updateModalReviewForm(); }
+function renderModalReviews() { let productReviews = reviews[currentProductId] || []; let container = document.getElementById('modalReviewsList'); if(productReviews.length===0){ container.innerHTML='<div style="text-align:center; padding:20px;">No hay reseñas aún. ¡Sé el primero en opinar!</div>'; return; } let html=''; productReviews.forEach(review=>{ if(review.banned && !(currentUser && currentUser.isAdmin)) return; html+=`<div class="review-item"><div class="review-header" style="display:flex; justify-content:space-between;"><div><strong>${review.userName}</strong><div class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div></div><small>${new Date(review.date).toLocaleDateString()}</small></div><p>${review.text}</p>${review.banned&&currentUser&&currentUser.isAdmin?'<small style="color:#ff6b6b;">⚠️ Baneada</small>':''}</div>`; }); container.innerHTML=html; }
+let modalSelectedRating=0;
+function updateModalReviewForm() { let reviewForm=document.getElementById('modalReviewForm'); let loginMsg=document.getElementById('modalLoginToReview'); if(currentUser && !currentUser.isAdmin){ reviewForm.style.display='block'; loginMsg.style.display='none'; } else if(currentUser && currentUser.isAdmin){ reviewForm.style.display='none'; loginMsg.innerHTML='<p>👑 Como administrador, no puedes dejar reseñas</p>'; loginMsg.style.display='block'; } else { reviewForm.style.display='none'; loginMsg.style.display='block'; } }
+document.getElementById('modalStarRating')?.querySelectorAll('.star').forEach(star=>{ star.addEventListener('click',(e)=>{ modalSelectedRating=parseInt(star.dataset.rating); document.querySelectorAll('#modalStarRating .star').forEach((s,i)=>{ if(i<modalSelectedRating) s.classList.add('active'); else s.classList.remove('active'); }); }); });
+document.getElementById('modalSubmitReview')?.addEventListener('click',()=>{ let text=document.getElementById('modalReviewText').value.trim(); let errorDiv=document.getElementById('modalReviewError'); if(modalSelectedRating===0){ errorDiv.innerText='Selecciona una calificación'; return; } if(!text){ errorDiv.innerText='Escribe tu reseña'; return; } if(!currentUser || currentUser.isAdmin){ errorDiv.innerText='Debes ser usuario normal'; return; } if(!reviews[currentProductId]) reviews[currentProductId]=[]; reviews[currentProductId].push({ id:Date.now(), userId:currentUser.id, userName:currentUser.name, rating:modalSelectedRating, text:text, date:Date.now(), banned:false }); saveReviews(); document.getElementById('modalReviewText').value=''; modalSelectedRating=0; document.querySelectorAll('#modalStarRating .star').forEach(s=>s.classList.remove('active')); errorDiv.innerText=''; renderModalReviews(); showToast('¡Reseña publicada!'); });
+document.getElementById('loginLinkFromModal')?.addEventListener('click',(e)=>{ e.preventDefault(); document.getElementById('productModal').classList.remove('show'); document.getElementById('loginModal').classList.add('show'); });
+let modalQty=1;
+document.getElementById('modalQtyMinus')?.addEventListener('click',()=>{ if(modalQty>1){ modalQty--; document.getElementById('modalProductQty').innerText=modalQty; } });
+document.getElementById('modalQtyPlus')?.addEventListener('click',()=>{ modalQty++; document.getElementById('modalProductQty').innerText=modalQty; });
+document.getElementById('modalAddToCart')?.addEventListener('click',()=>{ let product=products.find(p=>p.id===currentProductId); if(product){ let priceInfo=getProductPriceWithOffer(product); let item=cart.find(i=>i.id===product.id); if(item) item.quantity+=modalQty; else cart.push({id:product.id,name:product.name,price:priceInfo.price,img:product.img,quantity:modalQty}); saveCart(); renderProducts(); showToast(`✨ ${modalQty} x ${product.name} añadido`); modalQty=1; document.getElementById('modalProductQty').innerText='1'; } });
+
+// ==================== LOGIN ====================
+function updateUserUI() { let userInfoDiv=document.getElementById('userInfoDisplay'), logoutBtn=document.getElementById('logoutBtn'), adminBtn=document.getElementById('adminPanelBtn'), loginBtn=document.getElementById('loginBtn'); if(currentUser){ userInfoDiv.style.display='flex'; document.getElementById('userNameDisplay').innerText=currentUser.name; logoutBtn.style.display='block'; loginBtn.style.display='none'; if(currentUser.isAdmin) adminBtn.style.display='block'; else adminBtn.style.display='none'; } else { userInfoDiv.style.display='none'; logoutBtn.style.display='none'; adminBtn.style.display='none'; loginBtn.style.display='block'; } }
+document.getElementById('loginBtn').addEventListener('click',()=>{ document.getElementById('loginModal').classList.add('show'); });
+document.getElementById('closeLoginModal').addEventListener('click',()=>{ document.getElementById('loginModal').classList.remove('show'); });
+document.getElementById('tabLogin').addEventListener('click',()=>{ document.getElementById('loginPanel').style.display='block'; document.getElementById('registerPanel').style.display='none'; document.getElementById('tabLogin').style.color='#A86A65'; document.getElementById('tabLogin').style.borderBottom='3px solid #A86A65'; document.getElementById('tabRegister').style.color='#AB8882'; document.getElementById('tabRegister').style.borderBottom='none'; });
+document.getElementById('tabRegister').addEventListener('click',()=>{ document.getElementById('loginPanel').style.display='none'; document.getElementById('registerPanel').style.display='block'; document.getElementById('tabRegister').style.color='#A86A65'; document.getElementById('tabRegister').style.borderBottom='3px solid #A86A65'; document.getElementById('tabLogin').style.color='#AB8882'; document.getElementById('tabLogin').style.borderBottom='none'; });
+document.getElementById('doLoginBtn').addEventListener('click',()=>{ let username=document.getElementById('loginUsername').value.trim(); let password=document.getElementById('loginPassword').value.trim(); let errorDiv=document.getElementById('loginError'); if(username===ADMIN_USERNAME && password===ADMIN_PASSWORD){ currentUser={ id:'admin', name:'Administrador', username:ADMIN_USERNAME, isAdmin:true }; localStorage.setItem('cosmetic_currentUser',JSON.stringify(currentUser)); document.getElementById('loginModal').classList.remove('show'); updateUserUI(); showToast('Bienvenido Administrador'); renderProducts(); return; } let user=users.find(u=>(u.username===username||u.email===username)&&u.password===password); if(user){ if(user.banned){ errorDiv.innerText='Usuario baneado'; return; } currentUser={ id:user.id, name:user.name, username:user.username, email:user.email, isAdmin:false }; localStorage.setItem('cosmetic_currentUser',JSON.stringify(currentUser)); document.getElementById('loginModal').classList.remove('show'); updateUserUI(); showToast(`✨ Bienvenid@ ${user.name}`); renderProducts(); } else { errorDiv.innerText='Usuario o contraseña incorrectos'; } });
+document.getElementById('doRegisterBtn').addEventListener('click',()=>{ let name=document.getElementById('regName').value.trim(); let email=document.getElementById('regEmail').value.trim(); let username=document.getElementById('regUsername').value.trim(); let password=document.getElementById('regPassword').value.trim(); let errorDiv=document.getElementById('registerError'); let successDiv=document.getElementById('registerSuccess'); if(!name||!email||!username||!password){ errorDiv.innerText='Todos los campos son obligatorios'; return; } if(password.length<4){ errorDiv.innerText='Mínimo 4 caracteres'; return; } if(users.find(u=>u.username===username)){ errorDiv.innerText='Usuario ya existe'; return; } if(users.find(u=>u.email===email)){ errorDiv.innerText='Email ya registrado'; return; } let newUser={ id:Date.now(), name, email, username, password, isAdmin:false, banned:false }; users.push(newUser); saveUsers(); successDiv.innerText='Registro exitoso. Ahora inicia sesión'; errorDiv.innerText=''; document.getElementById('regName').value=''; document.getElementById('regEmail').value=''; document.getElementById('regUsername').value=''; document.getElementById('regPassword').value=''; setTimeout(()=>{ document.getElementById('tabLogin').click(); },1500); });
+document.getElementById('logoutBtn').addEventListener('click',()=>{ localStorage.removeItem('cosmetic_currentUser'); currentUser=null; updateUserUI(); showToast('Sesión cerrada'); renderProducts(); });
+
+// ==================== ADMIN PANEL ====================
+document.getElementById('adminPanelBtn').addEventListener('click',()=>{ if(currentUser && currentUser.isAdmin){ renderAdminProducts(); renderAdminUsers(); renderAdminReviews(); document.getElementById('adminModal').classList.add('show'); } });
+document.getElementById('closeAdminModal').addEventListener('click',()=>{ document.getElementById('adminModal').classList.remove('show'); });
+function renderAdminProducts(){ let container=document.getElementById('adminProductList'); if(products.length===0){ container.innerHTML='<p>No hay productos</p>'; return; } container.innerHTML=''; products.forEach(prod=>{ let div=document.createElement('div'); div.style.display='flex'; div.style.justifyContent='space-between'; div.style.padding='10px'; div.style.borderBottom='1px solid #ddd'; div.innerHTML=`<span>${prod.name} - $${prod.price}</span><button class="delete-product-btn" data-id="${prod.id}" style="background:#ff6b6b; border:none; padding:5px 10px; border-radius:20px; cursor:pointer;">Eliminar</button>`; container.appendChild(div); }); document.querySelectorAll('.delete-product-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ let id=parseInt(btn.dataset.id); products=products.filter(p=>p.id!==id); saveProducts(); renderProducts(); renderAdminProducts(); showToast('Producto eliminado'); }); }); }
+function renderAdminUsers(){ let container=document.getElementById('adminUserList'); if(users.length===0){ container.innerHTML='<p>No hay usuarios</p>'; return; } container.innerHTML=''; users.forEach(user=>{ let div=document.createElement('div'); div.style.display='flex'; div.style.justifyContent='space-between'; div.style.padding='10px'; div.style.borderBottom='1px solid #ddd'; div.innerHTML=`<span>${user.name} (@${user.username})</span><button class="ban-user-btn" data-id="${user.id}" style="background:${user.banned?'#4caf50':'#ff6b6b'}; border:none; padding:5px 10px; border-radius:20px; cursor:pointer;">${user.banned?'Desbanear':'Banear'}</button>`; container.appendChild(div); }); document.querySelectorAll('.ban-user-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ let id=parseInt(btn.dataset.id); let user=users.find(u=>u.id===id); if(user) user.banned=!user.banned; saveUsers(); renderAdminUsers(); showToast(user.banned?'Usuario baneado':'Usuario desbaneado'); }); }); }
+function renderAdminReviews(){ let container=document.getElementById('adminReviewsList'); let allReviews=[]; for(let productId in reviews){ reviews[productId].forEach(review=>{ allReviews.push({...review, productId:parseInt(productId)}); }); } if(allReviews.length===0){ container.innerHTML='<p>No hay reseñas</p>'; return; } container.innerHTML='<table style="width:100%; border-collapse:collapse;"></td><th>Producto</th><th>Usuario</th><th>Reseña</th><th>Estado</th><th>Acción</th></tr>'; allReviews.forEach(review=>{ let product=products.find(p=>p.id===review.productId); container.innerHTML+=`<tr><td>${product?product.name:'N/A'}</td><td>${review.userName}</td><td>${review.text.substring(0,30)}...</td><td>${review.banned?'<span style="color:#ff6b6b;">Baneada</span>':'Activa'}</td><td><button class="toggle-review-btn" data-product="${review.productId}" data-id="${review.id}" style="background:${review.banned?'#4caf50':'#ff6b6b'}; border:none; padding:5px 10px; border-radius:20px; cursor:pointer;">${review.banned?'Desbanear':'Banear'}</button></td></tr>`; }); container.innerHTML+='</table>'; document.querySelectorAll('.toggle-review-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ let productId=parseInt(btn.dataset.product); let reviewId=parseInt(btn.dataset.id); let review=reviews[productId].find(r=>r.id===reviewId); if(review) review.banned=!review.banned; saveReviews(); renderAdminReviews(); if(document.getElementById('productModal').classList.contains('show') && currentProductId===productId) renderModalReviews(); showToast(review.banned?'Reseña baneada':'Reseña desbaneada'); }); }); }
+document.getElementById('adminAddProduct').addEventListener('click',()=>{ let name=document.getElementById('adminProdName').value.trim(); let price=parseFloat(document.getElementById('adminProdPrice').value); let img=document.getElementById('adminProdImg').value.trim(); let desc=document.getElementById('adminProdDesc').value.trim(); if(!name||isNaN(price)||!img){ alert('Completa todos los campos'); return; } let newId=Math.max(...products.map(p=>p.id),0)+1; products.push({ id:newId, name, price, img, description:desc||'Producto de alta calidad' }); saveProducts(); renderProducts(); renderAdminProducts(); document.getElementById('adminProdName').value=''; document.getElementById('adminProdPrice').value=''; document.getElementById('adminProdImg').value=''; document.getElementById('adminProdDesc').value=''; showToast('Producto añadido'); });
+
+// ==================== RULETA ====================
+const SEGMENTS = [{name:"💄 Kit Labial",color:"#D8A694",prize:"kit labial"},{name:"🧴 Mascarilla",color:"#C68D7A",prize:"mascarilla"},{name:"✨ Crema Piel",color:"#A86A65",prize:"crema"},{name:"🌙 Tonos Oscuros",color:"#754B4D",prize:"base oscura"},{name:"☀️ Tonos Claros",color:"#D8A694",prize:"base clara"},{name:"🎨 Base Premium",color:"#C68D7A",prize:"base premium"},{name:"😅 Suerte próx",color:"#AB8882",prize:null},{name:"🔄 Double Spin",color:"#754B4D",prize:"extra"}];
+const SEGMENT_ANGLE = 360/SEGMENTS.length; let spinning=false, currentAngle=0, canvas=document.getElementById('rouletteCanvas'), ctx=canvas.getContext('2d'), spinCount=parseInt(localStorage.getItem('roulette_spinCount'))||0, unlockTimestamp=parseInt(localStorage.getItem('roulette_unlockTimestamp'))||0;
+function saveSpinData() { localStorage.setItem('roulette_spinCount',spinCount); localStorage.setItem('roulette_unlockTimestamp',unlockTimestamp); }
+function calculateNextWaitTime() { if(spinCount===0) return 0; let waitMinutes = 1.5*Math.pow(2,spinCount-1); if(waitMinutes>=1440){ spinCount=0; unlockTimestamp=0; saveSpinData(); document.getElementById('spinCount').innerText=spinCount; showToast("🎉 ¡Ciclo completado! Nuevo tiro GRATIS"); return 0; } return waitMinutes*60; }
+function updateSpinButtonState() { let spinBtn=document.getElementById('spinBtn'), now=Date.now(); spinBtn.disabled = (unlockTimestamp>0 && now<unlockTimestamp); let timerInfo=document.getElementById('timerInfo'); if(unlockTimestamp>0 && now<unlockTimestamp){ let rem=Math.ceil((unlockTimestamp-now)/1000), m=Math.floor(rem/60), s=rem%60; timerInfo.innerHTML=m>0?`⏳ Próximo giro: <strong>${m}m ${s}s</strong>`:`⏳ Próximo giro: <strong>${s}s</strong>`; } else timerInfo.innerHTML=spinCount===0?"🎯 ¡PRIMER GIRO GRATIS! 🎯":"✅ ¡Ruleta disponible! Gira ahora"; document.getElementById('spinCount').innerText=spinCount; }
+function registerSpin() { spinCount++; let nextWaitSecs=calculateNextWaitTime(); unlockTimestamp=nextWaitSecs>0?Date.now()+(nextWaitSecs*1000):0; saveSpinData(); updateSpinButtonState(); }
+function drawRoulette() { let size=canvas.width, cx=size/2, cy=size/2, r=size/2-5; ctx.clearRect(0,0,size,size); for(let i=0;i<SEGMENTS.length;i++){ let start=(currentAngle+i*SEGMENT_ANGLE)*Math.PI/180, end=(currentAngle+(i+1)*SEGMENT_ANGLE)*Math.PI/180; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,end); ctx.fillStyle=SEGMENTS[i].color; ctx.fill(); ctx.strokeStyle="#fff"; ctx.stroke(); ctx.save(); ctx.translate(cx,cy); ctx.rotate(start+SEGMENT_ANGLE*Math.PI/360); ctx.textAlign="center"; ctx.fillStyle="#2c2824"; ctx.font=`bold ${Math.max(10,size/28)}px 'Inter'`; ctx.fillText(SEGMENTS[i].name.substring(0,10),r*0.65,5); ctx.restore(); } ctx.beginPath(); ctx.arc(cx,cy,22,0,2*Math.PI); ctx.fillStyle="#A86A65"; ctx.fill(); ctx.fillStyle="#fff"; ctx.font=`bold ${Math.max(14,size/22)}px 'Inter'`; ctx.fillText("🎁",cx-10,cy+7); }
+function getCurrentSegment() { let pointerAngle=90; let effectiveAngle=(360-(currentAngle%360)+pointerAngle)%360; let segmentIndex=Math.floor(effectiveAngle/SEGMENT_ANGLE)%SEGMENTS.length; return {segment:SEGMENTS[segmentIndex]}; }
+function spinWheel() { if(spinning) return; let spinBtn=document.getElementById('spinBtn'); if(spinBtn.disabled){ showToast("⏰ Espera a que termine el tiempo"); return; } spinning=true; spinBtn.disabled=true; let spinAngle=1440+Math.random()*2160, startTime=performance.now(), duration=3000; function animate(now){ let elapsed=now-startTime, progress=Math.min(1,elapsed/duration), easeOut=1-Math.pow(1-progress,3); currentAngle=(currentAngle+spinAngle*easeOut)%360; drawRoulette(); if(progress<1) requestAnimationFrame(animate); else{ let result=getCurrentSegment(); spinning=false; registerSpin(); updateSpinButtonState(); document.getElementById('lastResult').innerHTML=`<strong>${result.segment.name}</strong><br><small>${result.segment.prize?'🏆 ¡Ganaste '+result.segment.prize+'!':'😅 Mejor suerte la próxima'}</small>`; if(result.segment.prize==='extra'){ showToast("🔄 ¡DOBLE TIRO!",2000); setTimeout(()=>{if(!spinning)spinWheel();},1000); } else if(result.segment.prize){ showConfetti(); showToast(`🎉 ¡GANASTE! ${result.segment.prize} 🎉`,3000); } } } requestAnimationFrame(animate); }
+function showConfetti() { let script=document.createElement('script'); script.src='https://cdn.jsdelivr.net/npm/canvas-confetti@1'; script.onload=()=>window.confetti({particleCount:150,spread:70,origin:{y:0.6}}); document.head.appendChild(script); }
+function showToast(msg) { let toast=document.getElementById('toastMsg'); toast.innerText=msg; toast.style.opacity='1'; setTimeout(()=>toast.style.opacity='0',2500); }
+
+// ==================== PÁGINA DE QUIÉNES SOMOS ====================
+function openQuienesSomosPage() {
+    const pageContent = `<!DOCTYPE html>
+    <html lang="es">
+    <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Cosmetic NCJ | Quiénes Somos</title><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#FFF0EC 0%,#F2E0DA 100%);color:#4B2E2A;}.container{max-width:1200px;margin:0 auto;padding:40px 20px;}.header{text-align:center;margin-bottom:50px;}.header h1{font-size:3rem;background:linear-gradient(135deg,#A86A65,#D8A694);background-clip:text;-webkit-background-clip:text;color:transparent;}.about-section{background:white;border-radius:40px;padding:40px;margin-bottom:30px;box-shadow:0 10px 30px rgba(0,0,0,0.08);}.about-section h2{color:#A86A65;margin-bottom:20px;}.about-section p{line-height:1.8;margin-bottom:15px;color:#5a4a3a;}.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin:40px 0;}.value-card{text-align:center;padding:30px;background:#fffbf5;border-radius:30px;}.value-card i{font-size:3rem;color:#A86A65;margin-bottom:15px;}.value-card h3{margin-bottom:10px;}.btn-back{display:inline-block;background:#D8A694;color:#3D2B28;padding:12px 30px;border-radius:40px;text-decoration:none;font-weight:600;margin-top:20px;transition:all 0.3s;}.btn-back:hover{background:#C68D7A;transform:scale(1.02);}footer{text-align:center;padding:30px;color:#AB8882;}</style></head>
+    <body><div class="container"><div class="header"><h1>✨ Cosmetic NCJ ✨</h1><p style="font-size:1.2rem;margin-top:10px;">Belleza con alma beige y dorada</p></div>
+    <div class="about-section"><h2><i class="fas fa-heart"></i> Nuestra Historia</h2><p>Cosmetic NCJ nació en 2020 con un sueño claro: ofrecer productos de maquillaje de alta calidad que realzaran la belleza natural de cada persona. Fundada por tres amigas apasionadas por el mundo de la cosmética, nuestra marca combina la calidez de los tonos beige con la elegancia de los acabados dorados.</p><p>Lo que comenzó como un pequeño emprendimiento en la Ciudad de Guatemala, hoy es una tienda en línea que llega a todo el país, llevando productos cuidadosamente seleccionados para que cada cliente se sienta único y especial.</p></div>
+    <div class="about-section"><h2><i class="fas fa-star"></i> Nuestra Misión</h2><p>Empoderar a las personas a través del maquillaje, brindando productos inclusivos, de alta calidad y a precios accesibles. Queremos que cada aplicación sea un momento de autocuidado y expresión personal.</p></div>
+    <div class="about-section"><h2><i class="fas fa-eye"></i> Nuestra Visión</h2><p>Convertirnos en la marca de maquillaje preferida de Guatemala, reconocida por nuestra calidad, compromiso con el cliente y responsabilidad social, expandiéndonos a otros países de Centroamérica.</p></div>
+    <div class="values-grid"><div class="value-card"><i class="fas fa-hand-holding-heart"></i><h3>Pasión</h3><p>Amamos lo que hacemos y se refleja en cada producto.</p></div><div class="value-card"><i class="fas fa-leaf"></i><h3>Sostenibilidad</h3><p>Comprometidos con el medio ambiente y productos cruelty-free.</p></div><div class="value-card"><i class="fas fa-users"></i><h3>Inclusión</h3><p>Maquillaje para todos los tonos de piel y estilos.</p></div><div class="value-card"><i class="fas fa-gem"></i><h3>Calidad</h3><p>Seleccionamos los mejores ingredientes y fórmulas.</p></div></div>
+    <div style="text-align:center;"><a href="#" onclick="window.close();return false;" class="btn-back"><i class="fas fa-arrow-left"></i> Cerrar ventana</a></div></div>
+    <footer><p>&copy; 2026 Cosmetic NCJ — Hecho con esencia natural.</p></footer></body></html>`;
+    const newWindow = window.open();
+    newWindow.document.write(pageContent);
+    newWindow.document.close();
+}
+
+// ==================== PÁGINA DE ENVÍO ====================
+function openShippingPage() {
+    if(cart.length === 0) { showToast("🛒 Tu carrito está vacío. Agrega productos primero."); return; }
+    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const pageContent = `<!DOCTYPE html>
+    <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Cosmetic NCJ | Datos de Envío</title><link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#FFF0EC 0%,#F2E0DA 100%);color:#4B2E2A;}.container{max-width:1200px;margin:0 auto;padding:40px 20px;}.header{text-align:center;margin-bottom:30px;}.header h1{font-size:2rem;background:linear-gradient(135deg,#A86A65,#D8A694);background-clip:text;-webkit-background-clip:text;color:transparent;}.two-columns{display:grid;grid-template-columns:1fr 1fr;gap:30px;}.form-section,.map-section{background:white;border-radius:30px;padding:30px;box-shadow:0 10px 30px rgba(0,0,0,0.08);}.form-group{margin-bottom:20px;}label{display:block;margin-bottom:8px;font-weight:600;color:#A86A65;}input,select,textarea{width:100%;padding:12px 15px;border:1px solid #E2C9C2;border-radius:25px;font-family:inherit;}.map-container{width:100%;height:300px;border-radius:20px;overflow:hidden;margin-bottom:15px;}.order-summary{background:rgba(216,166,148,0.15);border-radius:20px;padding:20px;margin:20px 0;}.btn-submit{width:100%;background:linear-gradient(135deg,#D8A694,#A86A65);border:none;padding:15px;border-radius:40px;font-weight:bold;font-size:1.1rem;cursor:pointer;transition:all 0.3s;color:white;}.btn-submit:hover{transform:scale(1.02);}.success-message{background:#4caf50;color:white;padding:15px;border-radius:25px;text-align:center;margin-top:20px;display:none;}.cart-items{max-height:200px;overflow-y:auto;margin:15px 0;}.cart-item-summary{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #E2C9C2;}@media(max-width:768px){.two-columns{grid-template-columns:1fr;}}</style></head>
+    <body><div class="container"><div class="header"><h1>🚚 Completa tus datos de envío</h1><p>Indícanos dónde quieres recibir tu pedido</p></div>
+    <div class="two-columns"><div class="form-section"><h3><i class="fas fa-user"></i> Información de contacto</h3><div class="form-group"><label>Nombre completo</label><input type="text" id="fullName" placeholder="Ej: María Gómez" value="${currentUser ? currentUser.name : ''}"></div>
+    <div class="form-group"><label>Teléfono / WhatsApp</label><input type="tel" id="phone" placeholder="Ej: 12345678"></div>
+    <div class="form-group"><label>Correo electrónico</label><input type="email" id="email" placeholder="ejemplo@correo.com" value="${currentUser ? currentUser.email : ''}"></div>
+    <h3><i class="fas fa-map-marker-alt"></i> Dirección de envío</h3><div class="form-group"><label>Departamento</label><select id="department"><option value="">Selecciona...</option><option>Guatemala</option><option>Sacatepéquez</option><option>Escuintla</option><option>Quetzaltenango</option><option>Huehuetenango</option><option>Alta Verapaz</option><option>Petén</option><option>Chimaltenango</option></select></div>
+    <div class="form-group"><label>Municipio / Zona</label><input type="text" id="municipality" placeholder="Ej: Zona 10, Villa Nueva"></div>
+    <div class="form-group"><label>Dirección exacta</label><textarea id="address" rows="3" placeholder="Calle, avenida, número de casa, referencias..."></textarea></div>
+    <div class="form-group"><label>Instrucciones adicionales</label><textarea id="instructions" rows="2" placeholder="Ej: Código de portón, cerca de algún punto de referencia..."></textarea></div>
+    <h3><i class="fas fa-credit-card"></i> Método de pago</h3>
+<div class="form-group">
+    <label>
+        <input type="radio" name="paymentMethod" value="credito">
+        Tarjeta de crédito
+    </label>
+</div>
+<div class="form-group">
+    <label>
+        <input type="radio" name="paymentMethod" value="debito">
+        Tarjeta de débito
+    </label>
+</div>
+<div class="form-group">
+    <label>
+        <input type="radio" name="paymentMethod" value="contraentrega" checked>
+        Pago contra entrega
+    </label>
+</div>
+    <div class="order-summary"><h3><i class="fas fa-shopping-cart"></i> Resumen del pedido</h3><div class="cart-items" id="cartSummary">${cart.map(item => `<div class="cart-item-summary"><span>${item.quantity}x ${item.name}</span><span>$${(item.price * item.quantity).toFixed(2)}</span></div>`).join('')}</div><div class="cart-item-summary" style="font-weight:bold;font-size:1.2rem;border-top:2px solid #A86A65;margin-top:10px;padding-top:10px;"><span>TOTAL</span><span>$${totalAmount.toFixed(2)}</span></div><p style="margin-top:10px;font-size:0.8rem;color:#AB8882;"><i class="fas fa-truck"></i> El costo de envío se calculará al confirmar</p></div>
+    <button id="confirmOrderBtn" class="btn-submit"><i class="fas fa-check-circle"></i> Confirmar pedido</button><div id="successMessage" class="success-message"></div></div>
+    <div class="map-section"><h3><i class="fas fa-map"></i> Ubicación de referencia</h3><div class="map-container"><iframe width="100%" height="100%" style="border:0;border-radius:20px;" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247233.2800084399!2d-90.68819681248862!3d14.634915061042332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8589a1bdb67fbccf%3A0xcb6213fa650ae35e!2sCiudad%20de%20Guatemala!5e0!3m2!1ses!2sgt!4v1700000000000!5m2!1ses!2sgt"></iframe></div><p style="font-size:0.8rem;color:#AB8882;margin-top:10px;"><i class="fas fa-info-circle"></i> Usa el mapa para ubicar tu zona de referencia.</p>
+    <div style="background:rgba(216,166,148,0.15);border-radius:15px;padding:15px;margin-top:20px;"><h4><i class="fas fa-clock"></i> Horarios de entrega</h4><p>📅 Lunes a Viernes: 9:00 AM - 6:00 PM</p><p>📅 Sábados: 9:00 AM - 2:00 PM</p><p>🚚 Tiempo estimado: 2-4 días hábiles</p></div></div></div></div>
+    <script>document.getElementById('confirmOrderBtn').addEventListener('click',function(){const fullName=document.getElementById('fullName').value.trim();const phone=document.getElementById('phone').value.trim();const email=document.getElementById('email').value.trim();const department=document.getElementById('department').value;const municipality=document.getElementById('municipality').value.trim();const address=document.getElementById('address').value.trim();if(!fullName||!phone||!email||!department||!municipality||!address){alert('❌ Por favor completa todos los campos obligatorios');return;}const paymentMethod =
+document.querySelector('input[name="paymentMethod"]:checked');
+if(
+    paymentMethod &&
+    (paymentMethod.value === 'credito' ||
+     paymentMethod.value === 'debito')
+){
+    const pagoModal = window.opener.document.getElementById('pagoModal');
+    if(pagoModal) {
+        pagoModal.style.display = 'flex';
+    }
+    window.close();
+    return;
+}const successDiv=document.getElementById('successMessage');successDiv.innerHTML='✅ ¡Pedido confirmado! '+fullName+', en las próximas horas recibirás un correo con los detalles de tu envío.';successDiv.style.display='block';setTimeout(()=>{if(confirm('¿Deseas cerrar esta ventana? Tu pedido ha sido registrado.')){window.close();if(window.opener&&!window.opener.closed){window.opener.postMessage('clearCart','*');}}},2000);});<\/script></body></html>`;
+    const newWindow = window.open();
+    newWindow.document.write(pageContent);
+    newWindow.document.close();
+}
+
+// ==================== PAGO MODAL (desde pago.html) ====================
+function showPagoModal() {
+    const pagoModal = document.getElementById('pagoModal');
+    if(pagoModal) {
+        pagoModal.style.display = 'flex';
+        // Reiniciar formulario
+        document.getElementById('cardForm').reset();
+        document.getElementById('msg').innerHTML = '';
+    }
+}
+
+// Configurar el formulario de pago
+document.getElementById('cardForm')?.addEventListener('submit', function(e){
+    e.preventDefault();
+    const number = document.getElementById('cardNumber').value;
+    const cvv = document.getElementById('cvv').value;
+    const msg = document.getElementById('msg');
+    if (!/^\d{16}$/.test(number)) {
+        msg.style.color = "red";
+        msg.innerText = "❌ Número de tarjeta inválido";
+        return;
+    }
+    if (!/^\d{3}$/.test(cvv)) {
+        msg.style.color = "red";
+        msg.innerText = "❌ CVV inválido";
+        return;
+    }
+    msg.style.color = "green";
+    msg.innerText = "✅ Pago procesado correctamente";
+    setTimeout(() => {
+        alert("Gracias por tu compra 💖");
+        document.getElementById('pagoModal').style.display = 'none';
+        // Limpiar carrito después de pago exitoso
+        cart = [];
+        saveCart();
+        renderProducts();
+        showToast("✅ Pedido completado. ¡Gracias por tu compra!");
+    }, 1500);
+});
+
+document.getElementById('closePagoBtn')?.addEventListener('click', function(){
+    document.getElementById('pagoModal').style.display = 'none';
+});
+
+// ==================== MODALES GENERALES ====================
+document.getElementById('cartIconBtn').addEventListener('click',()=>{ document.getElementById('cartModal').classList.add('show'); updateCartUI(); });
+document.getElementById('closeCartBtn').addEventListener('click',()=>{ document.getElementById('cartModal').classList.remove('show'); });
+document.getElementById('checkoutBtn').addEventListener('click',()=>{ document.getElementById('cartModal').classList.remove('show'); openShippingPage(); });
+window.addEventListener('message', (event) => { if(event.data === 'clearCart') { cart = []; saveCart(); renderProducts(); updateCartUI(); showToast("✅ Pedido confirmado. ¡Gracias por tu compra!"); } });
+
+let rouletteModal=document.getElementById('rouletteModal'), openRoulette=document.getElementById('rouletteModalBtn'), closeRoulette=document.getElementById('closeRouletteModal');
+openRoulette.addEventListener('click',()=>{ rouletteModal.classList.add('show'); setTimeout(()=>{ let size=Math.min(rouletteModal.querySelector('.modal-content').clientWidth-60,400); canvas.width=size; canvas.height=size; drawRoulette(); },100); });
+closeRoulette.addEventListener('click',()=>rouletteModal.classList.remove('show'));
+rouletteModal.addEventListener('click',(e)=>{if(e.target===rouletteModal)rouletteModal.classList.remove('show');});
+document.getElementById('spinBtn').addEventListener('click',spinWheel);
+document.getElementById('closeProductModal').addEventListener('click',()=>{ document.getElementById('productModal').classList.remove('show'); });
+let darkToggle=document.getElementById('darkModeToggle');
+darkToggle.addEventListener('click',()=>{ document.body.classList.toggle('dark'); localStorage.setItem('cosmeticDark',document.body.classList.contains('dark')); drawRoulette(); });
+if(localStorage.getItem('cosmeticDark')==='true') document.body.classList.add('dark');
+
+// Evento para Quiénes Somos
+document.getElementById('quienesSomosLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    openQuienesSomosPage();
+});
+
+// Evento para el logo clickeable (recargar página principal)
+document.getElementById('logoLink').addEventListener('click', () => {
+    window.location.reload();
+});
+
+// Exponer función para abrir modal de pago desde ventana hija
+window.showPagoModal = showPagoModal;
+
+// ==================== INICIALIZACIÓN ====================
+function init() { 
+    if(!localStorage.getItem('cosmetic_products')) localStorage.setItem('cosmetic_products',JSON.stringify(products)); 
+    else products=JSON.parse(localStorage.getItem('cosmetic_products')); 
+    if(localStorage.getItem('cosmetic_offer')){ 
+        let saved=JSON.parse(localStorage.getItem('cosmetic_offer')); 
+        let end=parseInt(localStorage.getItem('cosmetic_offer_endTime')); 
+        if(Date.now()<end){ currentOffer=saved; offerEndTime=end; updateOfferUI(); startOfferTimer(); } 
+        else startNewOffer(); 
+    } else startNewOffer(); 
+    renderProducts(); updateCartUI(); updateUserUI(); 
+    let size=Math.min(window.innerWidth-80,400); 
+    canvas.width=size; canvas.height=size; drawRoulette(); 
+    updateSpinButtonState(); 
+    setInterval(()=>updateSpinButtonState(),500); 
+}
+init();
+</script>
+</body>
+</html>
